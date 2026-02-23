@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #050505;
+  --foreground: #f0f0f0;
+  --card: #0a0a0a;
+  --card-foreground: #f0f0f0;
+  --popover: #0a0a0a;
+  --popover-foreground: #f0f0f0;
+  --primary: #FFD700;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f0f0f0;
+  --muted: #1a1a1a;
+  --muted-foreground: #888888;
+  --accent: #10B981;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ef4444;
+  --destructive-foreground: #f0f0f0;
+  --border: #2a2a2a;
+  --input: #1a1a1a;
+  --ring: #FFD700;
+  --radius: 0.75rem;
+
+  --casino-gold: #FFD700;
+  --casino-gold-dim: #B8960C;
+  --casino-neon: #00FFAA;
+  --casino-neon-dim: #0A6847;
+  --casino-surface: #0D0D0D;
+  --casino-surface-light: #161616;
+  --casino-surface-card: #111111;
+  --casino-red: #FF3B3B;
+  --casino-cyan: #00E5FF;
+}
+
+@theme inline {
+  --font-sans: 'Oswald', 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Casino shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes jackpot-glow {
+  0%, 100% { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD70066, 0 0 30px #FFD70033; }
+  50% { text-shadow: 0 0 15px #FFD700, 0 0 30px #FFD70088, 0 0 45px #FFD70055; }
+}
+
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes reel-spin {
+  0% { transform: translateY(0); opacity: 1; }
+  30% { transform: translateY(-100%); opacity: 0; }
+  31% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 33%,
+    rgba(255, 215, 0, 0.12) 50%,
+    transparent 67%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+.animate-neon-pulse {
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.animate-jackpot-glow {
+  animation: jackpot-glow 2s ease-in-out infinite;
+}
+
+.animate-badge-pulse {
+  animation: badge-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Scrollbar hide */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* LED text effect */
+.led-text {
+  font-family: var(--font-mono);
+  color: #FFD700;
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD70066;
+}
+
+/* Gold border glow for featured cards */
+.gold-glow {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2), 0 0 30px rgba(255, 215, 0, 0.1), inset 0 1px 0 rgba(255, 215, 0, 0.15);
+}
+
+/* Neon border for the panel */
+.neon-border {
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.15), 0 0 20px rgba(0, 255, 170, 0.05), inset 0 0 10px rgba(0, 255, 170, 0.05);
+}
