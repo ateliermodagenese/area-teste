@@ -80,7 +80,7 @@ export function HeroCarousel({ onPlay }: HeroCarouselProps) {
             }}
           />
           <div className="hero-icon-big">
-            {renderIcon ? renderIcon(120) : <span style={{ fontSize: "5rem" }}>{"\uD83C\uDFAE"}</span>}
+            {renderIcon ? renderIcon(160) : <span style={{ fontSize: "6rem" }}>{"\uD83C\uDFAE"}</span>}
           </div>
           <div className="orbit r1" style={{ borderColor: `${sl.colors[0]}12` }} />
           <div className="orbit r2" style={{ borderColor: `${sl.colors[1]}08` }} />

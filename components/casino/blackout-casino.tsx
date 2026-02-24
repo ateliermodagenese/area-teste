@@ -61,17 +61,23 @@ export function BlackoutCasino() {
 
   const games = GAMES[tab] || []
   const hasHero = ["cassino", "pvp", "eventos"].includes(tab)
+
+  /* Split featured vs regular games */
+  const featuredGames = games.filter(g => g.featured)
+  const regularGames = games.filter(g => !g.featured)
+
+  /* Pagination on regular games */
   const gc =
     tab === "eventos"
-      ? { cols: Math.min(games.length, 3), pp: 6, sz: "huge" as const }
+      ? { cols: Math.min(regularGames.length || 1, 3), pp: 6, sz: "large" as const }
       : tab === "pvp"
-        ? { cols: games.length <= 4 ? 2 : 3, pp: 4, sz: "large" as const }
+        ? { cols: regularGames.length <= 3 ? regularGames.length || 1 : 3, pp: 6, sz: "large" as const }
         : tab === "loja"
           ? { cols: 3, pp: 6, sz: "large" as const }
-          : { cols: 4, pp: 8, sz: "normal" as const }
+          : { cols: 5, pp: 10, sz: "normal" as const }
 
-  const tp = Math.ceil(games.length / gc.pp)
-  const pg = games.slice(page * gc.pp, (page + 1) * gc.pp)
+  const tp = Math.ceil(regularGames.length / gc.pp)
+  const pg = regularGames.slice(page * gc.pp, (page + 1) * gc.pp)
   const renderIcon = game ? ICON_MAP[game.id] : null
 
   return (
@@ -143,6 +149,17 @@ export function BlackoutCasino() {
               ) : (
                 <>
                   {hasHero && <HeroCarousel onPlay={playGame} />}
+
+                  {/* Featured games row - bigger cards like in reference */}
+                  {featuredGames.length > 0 && (
+                    <div className="featured-row">
+                      {featuredGames.map((g, i) => (
+                        <GameCard key={`feat-${g.id}`} game={g} size="large" index={i} onPlay={playGame} />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Regular games grid */}
                   <div className="grid-wrap">
                     <div className="grid" style={{ gridTemplateColumns: `repeat(${gc.cols},1fr)` }}>
                       {pg.map((g, i) => (

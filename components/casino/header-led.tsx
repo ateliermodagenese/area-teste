@@ -21,9 +21,8 @@ export function HeaderLED() {
         <div className="jp-val">R$ {jp.toLocaleString("pt-BR")},00</div>
       </div>
       <div className="hdr-right">
-        <div className="hdr-bal">
-          <span className="bal-coin">{"\uD83E\uDE99"}</span>
-          <span className="bal-val">R$ 1.250.500</span>
+        <div className="hdr-bal-box">
+          <span className="bal-val-big">R$ 2.680.500</span>
         </div>
         <div className="hdr-online">
           <span className="on-dot" />
