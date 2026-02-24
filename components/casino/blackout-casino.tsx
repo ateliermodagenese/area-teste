@@ -60,21 +60,23 @@ export function BlackoutCasino() {
   }, [gameTr])
 
   const games = GAMES[tab] || []
-  const hasHero = ["cassino", "pvp", "eventos"].includes(tab)
+  const hasHero = false /* No hero carousel -- featured cards ARE the heroes */
 
-  /* Split featured vs regular games */
-  const featuredGames = games.filter(g => g.featured)
-  const regularGames = games.filter(g => !g.featured)
-
-  /* Pagination on regular games */
+  /* For cassino: build a bespoke grid layout matching the reference image.
+     Featured games become large cards that span 2 columns.
+     Other tabs keep the simple grid. */
   const gc =
     tab === "eventos"
-      ? { cols: Math.min(regularGames.length || 1, 3), pp: 6, sz: "large" as const }
+      ? { cols: Math.min(games.length, 3), pp: 6, sz: "large" as const }
       : tab === "pvp"
-        ? { cols: regularGames.length <= 3 ? regularGames.length || 1 : 3, pp: 6, sz: "large" as const }
+        ? { cols: games.length <= 4 ? 2 : 3, pp: 6, sz: "large" as const }
         : tab === "loja"
           ? { cols: 3, pp: 6, sz: "large" as const }
-          : { cols: 5, pp: 10, sz: "normal" as const }
+          : { cols: 4, pp: 12, sz: "normal" as const }
+
+  /* For cassino tab, split featured vs regular */
+  const featuredGames = tab === "cassino" ? games.filter(g => g.featured) : []
+  const regularGames = tab === "cassino" ? games.filter(g => !g.featured) : games
 
   const tp = Math.ceil(regularGames.length / gc.pp)
   const pg = regularGames.slice(page * gc.pp, (page + 1) * gc.pp)
@@ -148,25 +150,44 @@ export function BlackoutCasino() {
                 </div>
               ) : (
                 <>
-                  {hasHero && <HeroCarousel onPlay={playGame} />}
-
-                  {/* Featured games row - bigger cards like in reference */}
-                  {featuredGames.length > 0 && (
-                    <div className="featured-row">
-                      {featuredGames.map((g, i) => (
-                        <GameCard key={`feat-${g.id}`} game={g} size="large" index={i} onPlay={playGame} />
+                  {tab === "cassino" ? (
+                    /* Bespoke casino grid: featured big cards + regular smaller cards */
+                    <div className="casino-grid">
+                      {/* Featured card 1 - spans 2 rows on left */}
+                      {featuredGames[0] && (
+                        <div className="cg-featured-1">
+                          <GameCard key={`feat-${featuredGames[0].id}`} game={featuredGames[0]} size="huge" index={0} onPlay={playGame} />
+                        </div>
+                      )}
+                      {/* Top row regular cards */}
+                      {pg.slice(0, 3).map((g, i) => (
+                        <GameCard key={`r1-${g.id}`} game={g} size="normal" index={i + 1} onPlay={playGame} />
                       ))}
+                      {/* Featured card 2 - spans 2 rows on left */}
+                      {featuredGames[1] && (
+                        <div className="cg-featured-2">
+                          <GameCard key={`feat-${featuredGames[1].id}`} game={featuredGames[1]} size="huge" index={4} onPlay={playGame} />
+                        </div>
+                      )}
+                      {/* Middle row regular cards */}
+                      {pg.slice(3, 6).map((g, i) => (
+                        <GameCard key={`r2-${g.id}`} game={g} size="normal" index={i + 5} onPlay={playGame} />
+                      ))}
+                      {/* Bottom row regular cards */}
+                      {pg.slice(6, 10).map((g, i) => (
+                        <GameCard key={`r3-${g.id}`} game={g} size="normal" index={i + 8} onPlay={playGame} />
+                      ))}
+                    </div>
+                  ) : (
+                    /* Other tabs: simple grid */
+                    <div className="grid-wrap">
+                      <div className="grid" style={{ gridTemplateColumns: `repeat(${gc.cols},1fr)` }}>
+                        {pg.map((g, i) => (
+                          <GameCard key={`${tab}-${page}-${g.id}`} game={g} size={gc.sz} index={i} onPlay={playGame} />
+                        ))}
+                      </div>
                     </div>
                   )}
-
-                  {/* Regular games grid */}
-                  <div className="grid-wrap">
-                    <div className="grid" style={{ gridTemplateColumns: `repeat(${gc.cols},1fr)` }}>
-                      {pg.map((g, i) => (
-                        <GameCard key={`${tab}-${page}-${g.id}`} game={g} size={gc.sz} index={i} onPlay={playGame} />
-                      ))}
-                    </div>
-                  </div>
                   {tp > 1 && (
                     <div className="dots">
                       {Array.from({ length: tp }, (_, i) => (

@@ -17,8 +17,8 @@ export function GameCard({ game, size = "normal", index = 0, onPlay }: GameCardP
   const [pressed, setPressed] = useState(false)
   const isFeatured = game.featured
 
-  /* Icon sizes much bigger to fill the card like in reference images */
-  const iconSize = size === "huge" ? 140 : size === "large" ? 120 : 100
+  /* Icon sizes: huge for featured cards, smaller for grid cards */
+  const iconSize = size === "huge" ? 110 : size === "large" ? 90 : 72
   const renderIcon = ICON_MAP[game.id]
 
   return (
@@ -32,7 +32,7 @@ export function GameCard({ game, size = "normal", index = 0, onPlay }: GameCardP
         "--c1": game.colors[0],
         "--c2": game.colors[1],
         animationDelay: `${index * 70}ms`,
-        transform: hovered ? `translateY(-${isFeatured ? 10 : 7}px) scale(1.03)` : "translateY(0) scale(1)",
+        transform: hovered ? `translateY(-${isFeatured ? 6 : 4}px) scale(1.02)` : "translateY(0) scale(1)",
       } as React.CSSProperties}
     >
       {/* Gold metallic border frame */}
